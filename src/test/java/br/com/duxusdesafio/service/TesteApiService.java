@@ -179,14 +179,14 @@ public class TesteApiService {
         assertEquals(esperado, franquiaMaisFamosa);
     }
 
-    @DataProvider
+    @DataProvider //TESTE ALTERADO PARA ESPERAR SOMENTE 1 FRANQUIA POIS EXISTE APENAS A NBA
     public static Object[][] testContagemPorFranquiaParams() {
 
         DadosParaTesteApiService dadosParaTesteApiService = new DadosParaTesteApiService();
         List<Time> todosOsTimes = dadosParaTesteApiService.getTodosOsTimes();
 
         Map<String, Long> esperado = new HashMap<>();
-        esperado.put(dadosParaTesteApiService.getFranquiaNBA(), 2L);
+        esperado.put(dadosParaTesteApiService.getFranquiaNBA(), 1L);
 
         return new Object[][]{
                 {
