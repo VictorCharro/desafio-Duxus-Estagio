@@ -22,11 +22,16 @@ import java.util.Map;
 @Service
 public class ApiService {
 
+    private boolean dentroDoIntervalo(Time time, LocalDate dataInicial, LocalDate dataFinal) {
+        boolean depoisDaInicial = dataInicial == null || !time.getData().isBefore(dataInicial);
+        boolean antesDaFinal    = dataFinal == null   || !time.getData().isAfter(dataFinal);
+        return depoisDaInicial && antesDaFinal;
+    }
+
     /**
      * Vai retornar um Time, com a composição do time daquela data
      */
     public Time timeDaData(LocalDate data, List<Time> todosOsTimes) {
-        // TODO Implementar método seguindo as instruções!
         for (Time time : todosOsTimes) {
             if (time.getData().equals(data)) {
                 return time;
@@ -40,13 +45,11 @@ public class ApiService {
      * dentro do período
      */
     public Integrante integranteMaisUsado(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
-        // TODO Implementar método seguindo as instruções!
         List<Integrante> integrantes = new ArrayList<>();
 
         for (Time time : todosOsTimes) {
 
-            if ((time.getData().isAfter(dataInicial) || time.getData().isEqual(dataInicial)) &&
-                    (time.getData().isBefore(dataFinal) || time.getData().isEqual(dataFinal))) {
+            if (dentroDoIntervalo(time, dataInicial, dataFinal)) {
 
                 for (int i = 0; i < time.getComposicaoTime().size(); i++) {
                     integrantes.add(time.getComposicaoTime().get(i).getIntegrante());
@@ -79,17 +82,12 @@ public class ApiService {
      * dentro do período
      */
     public List<String> integrantesDoTimeMaisComum(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
-        // TODO Implementar método seguindo as instruções!
         List<Time> times = new ArrayList<>();
 
         for (Time time : todosOsTimes) {
 
-            if ((time.getData().isAfter(dataInicial) || time.getData().isEqual(dataInicial)) &&
-                    (time.getData().isBefore(dataFinal) || time.getData().isEqual(dataFinal))) {
-
-                for (int i = 0; i < todosOsTimes.size(); i++) {
-                    times.add(time);
-                }
+            if (dentroDoIntervalo(time, dataInicial, dataFinal)) {
+                times.add(time);
             }
         }
 
@@ -121,14 +119,11 @@ public class ApiService {
      * Vai retornar a função mais comum nos times dentro do período
      */
     public String funcaoMaisComum(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
-        // TODO Implementar método seguindo as instruções!
         List<String> funcoes = new ArrayList<>();
 
         for (Time time : todosOsTimes) {
 
-            if ((time.getData().isAfter(dataInicial) || time.getData().isEqual(dataInicial)) &&
-                    (time.getData().isBefore(dataFinal) || time.getData().isEqual(dataFinal))) {
-
+            if (dentroDoIntervalo(time, dataInicial, dataFinal)) {
                 for (int i = 0; i < time.getComposicaoTime().size(); i++) {
                     funcoes.add(time.getComposicaoTime().get(i).getIntegrante().getFuncao());
                 }
@@ -159,13 +154,11 @@ public class ApiService {
      * Vai retornar o nome da Franquia mais comum nos times dentro do período
      */
     public String franquiaMaisFamosa(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
-        // TODO Implementar método seguindo as instruções!
         List<String> franquias = new ArrayList<>();
 
         for (Time time : todosOsTimes) {
 
-            if ((time.getData().isAfter(dataInicial) || time.getData().isEqual(dataInicial)) &&
-                    (time.getData().isBefore(dataFinal) || time.getData().isEqual(dataFinal))) {
+            if (dentroDoIntervalo(time, dataInicial, dataFinal)) {
 
                 for (int i = 0; i < time.getComposicaoTime().size(); i++) {
                     franquias.add(time.getComposicaoTime().get(i).getIntegrante().getFranquia());
@@ -198,17 +191,15 @@ public class ApiService {
      * Vai retornar o número (quantidade) de Franquias dentro do período
      */
     public Map<String, Long> contagemPorFranquia(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes) {
-        // TODO Implementar método seguindo as instruções!
         Map <String, Long> contagemFranquia = new HashMap<>();
 
         for (Time time : todosOsTimes) {
 
-            if ((time.getData().isAfter(dataInicial) || time.getData().isEqual(dataInicial)) &&
-                    (time.getData().isBefore(dataFinal) || time.getData().isEqual(dataFinal))) {
+            if (dentroDoIntervalo(time, dataInicial, dataFinal)) {
 
                 String nomeFranquia = time.getComposicaoTime().get(0).getIntegrante().getFranquia();
 
-                if(!contagemFranquia.toString().contains(nomeFranquia)) {
+                if(!contagemFranquia.containsKey(nomeFranquia)) {
                     contagemFranquia.put(nomeFranquia, 1L);
                 }
             }
@@ -220,13 +211,11 @@ public class ApiService {
      * Vai retornar o número (quantidade) de Funções dentro do período
      */
     public Map<String, Long> contagemPorFuncao(LocalDate dataInicial, LocalDate dataFinal, List<Time> todosOsTimes){
-        // TODO Implementar método seguindo as instruções!
         Map <String, Long> contagemFuncao = new HashMap<>();
 
         for (Time time : todosOsTimes) {
 
-            if ((time.getData().isAfter(dataInicial) || time.getData().isEqual(dataInicial)) &&
-                    (time.getData().isBefore(dataFinal) || time.getData().isEqual(dataFinal))) {
+            if (dentroDoIntervalo(time, dataInicial, dataFinal)) {
 
                 String nomeFuncao = time.getComposicaoTime().get(0).getIntegrante().getFuncao();
 
