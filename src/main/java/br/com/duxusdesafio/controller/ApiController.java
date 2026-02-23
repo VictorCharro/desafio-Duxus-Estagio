@@ -10,9 +10,12 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.time.LocalDate;
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api")
@@ -54,5 +57,46 @@ public class ApiController {
     @GetMapping("/listar-integrantes/{id}")
     public Integrante listarIntegrantes(@PathVariable Long id){
         return apiService.listarIntegrantePeloId(id);
+    }
+
+    @GetMapping("/time-da-data")
+    public Time timeDaData(@RequestParam LocalDate data) {
+        return apiService.timeDaData(data, apiService.listarTimes());
+    }
+
+    @GetMapping("/integrante-mais-usado")
+    public Integrante integranteMaisUsado(@RequestParam(required = false) LocalDate dataInicial,
+                                          @RequestParam(required = false) LocalDate dataFinal) {
+        return apiService.integranteMaisUsado(dataInicial, dataFinal, apiService.listarTimes());
+    }
+
+    @GetMapping("/integrantes-time-mais-comum")
+    public List<String> integrantesDoTimeMaisComum(@RequestParam(required = false) LocalDate dataInicial,
+                                                   @RequestParam(required = false) LocalDate dataFinal) {
+        return apiService.integrantesDoTimeMaisComum(dataInicial, dataFinal, apiService.listarTimes());
+    }
+
+    @GetMapping("/funcao-mais-comum")
+    public String funcaoMaisComum(@RequestParam(required = false) LocalDate dataInicial,
+                                  @RequestParam(required = false) LocalDate dataFinal) {
+        return apiService.funcaoMaisComum(dataInicial, dataFinal, apiService.listarTimes());
+    }
+
+    @GetMapping("/franquia-mais-famosa")
+    public String franquiaMaisFamosa(@RequestParam(required = false) LocalDate dataInicial,
+                                     @RequestParam(required = false) LocalDate dataFinal) {
+        return apiService.franquiaMaisFamosa(dataInicial, dataFinal, apiService.listarTimes());
+    }
+
+    @GetMapping("/contagem-por-franquia")
+    public Map<String, Long> contagemPorFranquia(@RequestParam(required = false) LocalDate dataInicial,
+                                                 @RequestParam(required = false) LocalDate dataFinal) {
+        return apiService.contagemPorFranquia(dataInicial, dataFinal, apiService.listarTimes());
+    }
+
+    @GetMapping("/contagem-por-funcao")
+    public Map<String, Long> contagemPorFuncao(@RequestParam(required = false) LocalDate dataInicial,
+                                               @RequestParam(required = false) LocalDate dataFinal) {
+        return apiService.contagemPorFuncao(dataInicial, dataFinal, apiService.listarTimes());
     }
 }
