@@ -1,6 +1,5 @@
 package br.com.duxusdesafio.controller;
 
-import br.com.duxusdesafio.model.ComposicaoTime;
 import br.com.duxusdesafio.model.Integrante;
 import br.com.duxusdesafio.model.Time;
 import br.com.duxusdesafio.service.ApiService;
@@ -12,7 +11,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.time.LocalDate;
 import java.util.List;
 
 @RestController
@@ -23,12 +21,12 @@ public class ApiController {
     private ApiService apiService;
 
     @PostMapping("/adicionar-time")
-    public Time adicionarTime(LocalDate data, List<ComposicaoTime> composicaoTime) {
-        return apiService.adicionarTime(data, composicaoTime);
+    public Time adicionarTime(@RequestBody Time time) {
+        return apiService.adicionarTime(time.getData(), time.getComposicaoTime());
     }
 
     @DeleteMapping("/deletar-time")
-    public void deletarTime(Time time) {
+    public void deletarTime(@RequestBody Time time) {
         apiService.deletarTime(time);
     }
 
@@ -39,11 +37,11 @@ public class ApiController {
 
     @PostMapping("/adicionar-integrante")
     public Integrante adicionarIntegrante(@RequestBody Integrante integrante){
-        return apiService.adicionarIntegrante(integrante);
+        return apiService.adicionarIntegrante(integrante.getFranquia(), integrante.getNome(), integrante.getFuncao());
     }
 
     @DeleteMapping("/deletar-integrante")
-    public void deletarIntegrante(Integrante integrante){
+    public void deletarIntegrante(@RequestBody Integrante integrante){
         apiService.deletarIntegrante(integrante);
     }
 
