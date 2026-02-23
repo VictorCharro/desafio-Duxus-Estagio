@@ -39,6 +39,7 @@ npm-debug.log*
 .env
 .env.local
 .env.*.local
+application.properties
 
 # Application
 logs/
