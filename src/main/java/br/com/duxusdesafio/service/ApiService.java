@@ -1,7 +1,12 @@
 package br.com.duxusdesafio.service;
 
+import br.com.duxusdesafio.model.ComposicaoTime;
 import br.com.duxusdesafio.model.Integrante;
 import br.com.duxusdesafio.model.Time;
+import br.com.duxusdesafio.repository.ComposicaoTimeRepository;
+import br.com.duxusdesafio.repository.IntegranteRepository;
+import br.com.duxusdesafio.repository.TimeRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDate;
@@ -21,6 +26,15 @@ import java.util.Map;
  */
 @Service
 public class ApiService {
+
+    @Autowired
+    private ComposicaoTimeRepository composicaoTimeRepository;
+
+    @Autowired
+    private IntegranteRepository integranteRepository;
+
+    @Autowired
+    private TimeRepository timeRepository;
 
     private boolean dentroDoIntervalo(Time time, LocalDate dataInicial, LocalDate dataFinal) {
         boolean depoisDaInicial = dataInicial == null || !time.getData().isBefore(dataInicial);
@@ -230,4 +244,31 @@ public class ApiService {
         return contagemFuncao;
     }
 
+    public Time adicionarTime(LocalDate data, List<ComposicaoTime> composicaoTime) {
+        Time time = new Time();
+        time.setComposicaoTime(composicaoTime);
+        time.setData(data);
+        timeRepository.save(time);
+        return time;
+    }
+
+    public void deletarTime(Time time){
+        timeRepository.delete(time);
+    }
+
+    public List<Time> listarTimes(){
+        return timeRepository.findAll();
+    }
+
+    public Integrante adicionarIntegrante(Integrante integrante){
+        return integranteRepository.save(integrante);
+    }
+
+    public void deletarIntegrante(Integrante integrante){
+        integranteRepository.delete(integrante);
+    }
+
+    public List<Integrante> listarIntegrantes(){
+        return integranteRepository.findAll();
+    }
 }
