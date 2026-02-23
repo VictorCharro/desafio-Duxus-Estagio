@@ -252,35 +252,28 @@ public class ApiService {
         return time;
     }
 
-    public void deletarTime(Time time){
-        timeRepository.delete(time);
+    public void deletarTime(Long id){
+        timeRepository.deleteById(id);
     }
 
     public List<Time> listarTimes(){
-
-        List<Time> timeList = new ArrayList<>();
-
-        for (Time time : timeRepository.findAll()) {
-            timeList.add(time);
-        }
-
-        return timeList;
+        return timeRepository.findAll();
     }
 
-    public Integrante adicionarIntegrante(String franquia, String nome, String funcao){
-        Integrante integrante = new Integrante();
-        integrante.setFranquia(franquia);
-        integrante.setNome(nome);
-        integrante.setFuncao(funcao);
+    public Time listarTimePeloId(Long id){
+        return timeRepository.findById(id).get();
+    }
+
+    public Integrante adicionarIntegrante(Integrante integrante){
         integranteRepository.save(integrante);
         return integrante;
     }
 
-    public void deletarIntegrante(Integrante integrante){
-        integranteRepository.delete(integrante);
-    }
-
     public List<Integrante> listarIntegrantes(){
         return integranteRepository.findAll();
+    }
+
+    public Integrante listarIntegrantePeloId(Long id){
+        return integranteRepository.findById(id).get();
     }
 }
