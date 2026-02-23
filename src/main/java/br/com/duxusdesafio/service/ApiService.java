@@ -257,11 +257,23 @@ public class ApiService {
     }
 
     public List<Time> listarTimes(){
-        return timeRepository.findAll();
+
+        List<Time> timeList = new ArrayList<>();
+
+        for (Time time : timeRepository.findAll()) {
+            timeList.add(time);
+        }
+
+        return timeList;
     }
 
-    public Integrante adicionarIntegrante(Integrante integrante){
-        return integranteRepository.save(integrante);
+    public Integrante adicionarIntegrante(String franquia, String nome, String funcao){
+        Integrante integrante = new Integrante();
+        integrante.setFranquia(franquia);
+        integrante.setNome(nome);
+        integrante.setFuncao(funcao);
+        integranteRepository.save(integrante);
+        return integrante;
     }
 
     public void deletarIntegrante(Integrante integrante){
