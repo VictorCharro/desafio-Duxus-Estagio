@@ -122,11 +122,15 @@ public class ApiService {
                 contagemMaisComum = contagemTemporaria;
             }
         }
-        List<String> ListaMaisComums = new ArrayList<>();
+
+        if (maisComum == null) return new ArrayList<>();
+
+        List<String> listaMaisComums = new ArrayList<>();
+
         for (int i = 0; i < maisComum.getComposicaoTime().size(); i++) {
-            ListaMaisComums.add(maisComum.getComposicaoTime().get(i).getIntegrante().getNome());
+            listaMaisComums.add(maisComum.getComposicaoTime().get(i).getIntegrante().getNome());
         }
-        return ListaMaisComums;
+        return listaMaisComums;
     }
 
     /**
@@ -181,7 +185,7 @@ public class ApiService {
         }
 
         int contagemFranquiaMaisFamosa = 0;
-        String FranquiaMaisFamosa = "";
+        String franquiaMaisFamosa = "";
 
         for (String franquia : franquias) {
             int contagemTemporaria = 0;
@@ -193,11 +197,11 @@ public class ApiService {
             }
 
             if (contagemTemporaria > contagemFranquiaMaisFamosa) {
-                FranquiaMaisFamosa = franquia;
+                franquiaMaisFamosa = franquia;
                 contagemFranquiaMaisFamosa = contagemTemporaria;
             }
         }
-        return FranquiaMaisFamosa;
+        return franquiaMaisFamosa;
     }
 
 
@@ -233,7 +237,7 @@ public class ApiService {
 
                 String nomeFuncao = time.getComposicaoTime().get(0).getIntegrante().getFuncao();
 
-                if(contagemFuncao.toString().contains(nomeFuncao)) {
+                if(contagemFuncao.containsKey(nomeFuncao)) {
                     contagemFuncao.merge(nomeFuncao, 1L, Long::sum);
                 }
                 else {
@@ -261,7 +265,8 @@ public class ApiService {
     }
 
     public Time listarTimePeloId(Long id){
-        return timeRepository.findById(id).get();
+        return timeRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Time não encontrado"));
     }
 
     public Integrante adicionarIntegrante(Integrante integrante){
@@ -274,6 +279,7 @@ public class ApiService {
     }
 
     public Integrante listarIntegrantePeloId(Long id){
-        return integranteRepository.findById(id).get();
+        return integranteRepository.findById(id)
+                .orElseThrow(() -> new RuntimeException("Integrante não encontrado"));
     }
 }
